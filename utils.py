@@ -23,7 +23,7 @@ def powerlaw(logminval, logmaxval, power):
 
     return 10.0 ** log
 
-def generate_events_worker(sub_events, freqs, peak_freq_pars, width_freq_pars, slope, peak_freq_dist, width_freq_dist):
+def generate_events_worker(sub_events, freqs, peak_freq_pars, width_freq_pars, logFmin, logFmax, slope, peak_freq_dist, width_freq_dist):
     events = []
     for _ in range(sub_events):
         F = powerlaw(logFmin, logFmax, slope) * u.Jy * u.ms
@@ -70,7 +70,7 @@ def generate_events(freqs,
     remaining_events = nevents % num_processes
 
     # Generate events using multiprocessing
-    results = [pool.apply_async(generate_events_worker, args=(events_per_process + (1 if i < remaining_events else 0), freqs, peak_freq_pars, width_freq_pars, slope, peak_freq_dist, width_freq_dist)) for i in range(num_processes)]
+    results = [pool.apply_async(generate_events_worker, args=(events_per_process + (1 if i < remaining_events else 0), freqs, peak_freq_pars, width_freq_pars, logFmin, logFmax, slope, peak_freq_dist, width_freq_dist)) for i in range(num_processes)]
     pool.close()
     pool.join()
 
@@ -156,7 +156,7 @@ def subbanded_search(events, receiver, subbands, verbose=False, threshold=10, ba
     """
     Perform a sub-banded search in a given list of events
     """
-    
+
     bw = receiver.bw
     fc = receiver.fc
     Fmin = receiver.get_mdf(threshold=threshold)

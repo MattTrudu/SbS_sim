@@ -1,0 +1,32 @@
+#Telescope Parameter
+tsys: 30 # K
+gain: 0.5 # K / Jy
+npol: 2
+nchan: 1024
+fc: 1382 # MHz
+bw: 400 # MHz
+dt: 64 # us
+name: MyTelescope
+
+#Events
+nevents: 1000
+ncpu: 1
+peak_freq_pars: [1100,1700] # MHz
+width_freq_pars: [60,1000] # MHz
+slope: -1.5
+peak_freq_dist: uniform
+width_freq_dist: uniform
+logFmin: -2
+logFmax: 3
+
+#Sub-banded search
+a: 2
+Z: 2
+shifting: True
+threshold: 10
+batch_size: 10
+
+#General
+verbose: False
+outdir: None
+outname: results 
